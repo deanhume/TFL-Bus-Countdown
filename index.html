@@ -54,11 +54,11 @@ var data = $.parseJSON(stopListingData);
 	  .text(item.name + ' (stop ' + item.stopIndicator + ') to ' + item.towards)
 	  .attr("onclick", "getBusListingForStop(" + item.id + ")")
 	  .attr("class", "stopListing")
-	  .attr("id", item.id)	  
+	  .attr("id", item.id)
 	  //.attr("href","#_" + item.stopIndicator)
 	  .attr("name","stop_" + item.id)
 	  .appendTo("#stopListing");
-    });	
+    });
 }
 
 function getBusListingForStop(stopId){
@@ -75,15 +75,15 @@ var endpoint = 'http://countdown.tfl.gov.uk/stopBoard/' + stopId + '/';
 }
 
 function displayBusListing(busListingData, stopId){
-	
+
 	var data = $.parseJSON(busListingData);
 
 	$("#" + stopId).children().remove();
-  
+
     $("<h2 />").text("Buses Due").appendTo("#" + stopId);
-	  
+
 	$.each(data.arrivals, function(i,item){
-	  
+
       $("<span/>")
 	  .text(item.estimatedWait)
 	  .attr("class", "busListing time")
@@ -105,7 +105,7 @@ function displayBusListing(busListingData, stopId){
 
       $("<br/>")
 	  .appendTo("#" + stopId);
-    });	
+    });
 }
 
 function getFaves()
@@ -129,6 +129,17 @@ function setFave(stopid)
 <div id="stopListing"></div>
 <div id="disclaimer"><img src="http://www.gravatar.com/avatar/bf7555903ede35aa7463c94ddc2cf966" width"40px" height="40px" /> All of the data is coming from the TFL website. I am not a TFL employee and this site is in no way endorsed by TFL. The functionality of this site is in no way guaranteed and should TFL change their site at all, this one will break! This page may or may not work on your device, and it curently relies on you device's geolocation (location sharing) functionality. I'm just making something I think might be handy for me, and you can now have a go too!</div>
 <script async>
+	// Register the service worker
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('./service-worker.js').then(function(registration) {
+			// Registration was successful
+			console.log('ServiceWorker registration successful with scope: ', registration.scope);
+	}).catch(function(err) {
+			// registration failed :(
+				console.log('ServiceWorker registration failed: ', err);
+			});
+	}
+
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
